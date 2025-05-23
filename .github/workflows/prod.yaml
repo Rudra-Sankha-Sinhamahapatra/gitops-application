@@ -35,11 +35,26 @@ jobs:
         run: |
           git clone https://github.com/Rudra-Sankha-Sinhamahapatra/argocd-gitops-deployment.git
           cd argocd-gitops-deployment
-
-          sed -i 's|image: rudrasankha/todo-app-week-39c3:.*|image: rudrasankha/todo-app-week-39c3:${{ github.sha }}|' manifest.yaml
-
+          
+          echo "Current content of manifest.yaml:"
+          cat manifest.yaml
+          
+          # Try a more specific sed pattern
+          sed -i "s|image: rudrasankha/todo-app-week-39c3:[a-zA-Z0-9]*|image: rudrasankha/todo-app-week-39c3:${{ github.sha }}|" manifest.yaml
+          
+          echo "Content after sed command:"
+          cat manifest.yaml
+          
+          # Show git status
+          echo "Git status:"
+          git status
+          
+          # Show if there are any changes
+          echo "Git diff:"
+          git diff
+          
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-          git add .
+          git add manifest.yaml
           git commit -m "Update school server image tags to ${{ github.sha }}"
           git push https://${PAT}@github.com/Rudra-Sankha-Sinhamahapatra/argocd-gitops-deployment.git main
