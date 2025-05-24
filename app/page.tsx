@@ -1,8 +1,11 @@
 import { Todos } from "@/todos/todos";
 import { Todo } from "@/types/Todo.types";
+import { Header } from "@/components/Header";
 
 export default function Home() {
   return (
+    <>
+    <Header />
     <div className="flex flex-col justify-center items-center min-h-screen">
       <div className="border border-violet-500 p-4 space-y-2">
       <h1>My <span className="font-semibold bg-gradient-to-r from-violet-500 to-purple-500 text-transparent bg-clip-text"> TodoList </span> Test</h1>
@@ -20,6 +23,7 @@ export default function Home() {
         })}
       </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

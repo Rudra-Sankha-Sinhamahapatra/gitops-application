@@ -21,7 +21,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build and push school image
+      - name: Build and push todo app image
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -29,17 +29,17 @@ jobs:
           push: true
           tags: rudrasankha/todo-app-week-39c3:${{ github.sha }}
           
-      - name: Clone staging-ops repo, update image tags, and push tags
+      - name: Clone Gitops repo, update image tags, and push tags
         env:
           PAT: ${{ secrets.PAT }}
         run: |
           git clone https://github.com/Rudra-Sankha-Sinhamahapatra/argocd-gitops-deployment.git
           cd argocd-gitops-deployment
-          
+
           echo "Current content of manifest.yaml:"
           cat manifest.yaml
           
-          # Try a more specific sed pattern
+          # sed command to update the image tag in the manifest.yaml file
           sed -i "s|image: rudrasankha/todo-app-week-39c3:[a-zA-Z0-9]*|image: rudrasankha/todo-app-week-39c3:${{ github.sha }}|" manifest.yaml
           
           echo "Content after sed command:"
@@ -52,7 +52,7 @@ jobs:
           # Show if there are any changes
           echo "Git diff:"
           git diff
-          
+
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           git add manifest.yaml
